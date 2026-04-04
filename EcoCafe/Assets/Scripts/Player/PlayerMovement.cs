@@ -14,9 +14,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _jumpForce = 10f;             //            
     private Rigidbody _rb;                       // Rigidbody
     private Animator _anim;
+    private PlayerInteract _playerInteract;
 
     private bool _isGrounded;
     private bool _isJump = false;
+    private bool _isCarriasBox = false;
+    private bool _isCarriasTrash = false;
 
     private Vector3 _movement = Vector3.zero;
     private Vector3 _rotation = Vector3.zero;
@@ -32,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _anim = GetComponentInChildren<Animator>();
+        _playerInteract = GetComponent<PlayerInteract>();
     }
     // Start is called before the first frame update
     void Start()
@@ -71,7 +75,30 @@ public class PlayerMovement : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
-            //playerControl.TakeItem();
+            int id = _playerInteract.GetCurrentTakingID;
+            if (id != -1)
+            {
+                _anim.SetBool("IsWalk", false);
+                if (_isCarriasBox == false && _isCarriasTrash == false)
+                {
+                    if (id < 10)
+                    {
+                        _isCarriasBox = true;
+                        _anim.SetBool("IsWalkBox", true);
+                    }
+                    else
+                    {
+                        _isCarriasTrash = true;
+                        _anim.SetBool("IsTakeTrash", true);
+                        Invoke("AnimWalkTrash", 0.35f);
+                    }
+                    _playerInteract.CarriasItem();
+                }
+                else
+                {
+                    _playerInteract.ClearItem();
+                }
+            }
         }
         if (Input.GetKeyDown(KeyCode.Tab))
         {
@@ -80,18 +107,27 @@ public class PlayerMovement : MonoBehaviour
         if (_timer > 0) { _timer -= Time.deltaTime; }
         else
         {
-            _timer = 0.25f; 
-            if (_myVelocity > 0.2f)
+            _timer = 0.25f;
+            if (_isCarriasBox == false && _isCarriasTrash == false)
             {
-                _anim.SetBool("IsWalk", true);
+                if (_myVelocity > 0.2f)
+                {
+                    _anim.SetBool("IsWalk", true);
+                }
+                else
+                {
+                    _anim.SetBool("IsWalk", false);
+                }
             }
-            else
-            {
-                _anim.SetBool("IsWalk", false);
-            }
-                _myVelocity = 0;
+            _myVelocity = 0;
         }
     }
+
+    private void AnimWalkTrash()
+    {
+        _anim.SetBool("IsWalkTrash", true);
+    }
+
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -100,6 +136,7 @@ public class PlayerMovement : MonoBehaviour
         Turn(_hor);
         Jump();
     }
+
     private void Move(float input)
     {
         //if (input > 0.99f) runStart += Time.deltaTime;
