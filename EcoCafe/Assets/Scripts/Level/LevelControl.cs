@@ -15,6 +15,8 @@ public class LevelControl : MonoBehaviour
     private int _countMany = 0;
     private float _pollution = 0;
 
+    private List<int> _saleIdObjects = new List<int>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -36,6 +38,7 @@ public class LevelControl : MonoBehaviour
             {   //  прошло 3 минуты, а в игре 1 день
                 _countSecond = 0;
                 _cabbageBox.CreateBox();
+                UpdateTreeSet();
             }
         }
     }
@@ -71,5 +74,16 @@ public class LevelControl : MonoBehaviour
             _countMany = newMany;
             _levelUI.ViewMany(_countMany);
         } 
+    }
+
+    public bool CheckManyAndSale(int count, int saleID)
+    {
+        if (count < _countMany)
+        {
+            ChangeMany(-count);
+            if (_saleIdObjects.Contains(saleID) == false) _saleIdObjects.Add(saleID);
+            return true;
+        }
+        return false;
     }
 }

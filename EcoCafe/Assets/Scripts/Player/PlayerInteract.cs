@@ -51,6 +51,14 @@ public class PlayerInteract : MonoBehaviour
                 _currentTriggerItemID = tc.ID_TaikingItem;
             }
         }
+        if (other.CompareTag("SalePoint"))
+        {
+            SalePoint sp = other.gameObject.GetComponent<SalePoint>();
+            if (sp != null)
+            {
+                _levelControl.ViewHint($"ֽאזלטעו 'E' קעמבû {sp.Description}");
+            }
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -75,6 +83,10 @@ public class PlayerInteract : MonoBehaviour
                 _levelControl.HideHint();
                 tc.ChangeUsed(false);
             }
+        }
+        if (other.CompareTag("SalePoint"))
+        {
+            _levelControl.HideHint();
         }
     }
 
