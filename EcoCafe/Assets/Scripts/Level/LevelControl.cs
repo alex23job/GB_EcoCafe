@@ -6,12 +6,14 @@ public class LevelControl : MonoBehaviour
 {
     [SerializeField] private LevelUI _levelUI;
     [SerializeField] private CabbageBoxControl _cabbageBox;
-
+    [SerializeField] private TreeControl[] _treeSet;
+ 
 
     private float _timer = 1f;
     private int _countSecond = 0;
 
     private int _countMany = 0;
+    private float _pollution = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -36,6 +38,12 @@ public class LevelControl : MonoBehaviour
                 _cabbageBox.CreateBox();
             }
         }
+    }
+
+    private void UpdateTreeSet()
+    {
+        bool viewCrona = _pollution < 50f;
+        foreach(TreeControl tree in _treeSet) tree.ViewCrona(viewCrona);
     }
 
     public void ViewHint(string hintText)
