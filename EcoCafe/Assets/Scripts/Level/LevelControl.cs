@@ -7,13 +7,14 @@ public class LevelControl : MonoBehaviour
     [SerializeField] private LevelUI _levelUI;
     [SerializeField] private CabbageBoxControl _cabbageBox;
     [SerializeField] private TreeControl[] _treeSet;
- 
+
+    private DayStat _dayStat;
 
     private float _timer = 1f;
     private int _countSecond = 0;
 
     private int _countMany = 0;
-    private float _pollution = 0;
+    private int _pollution = 0;
 
     private List<int> _saleIdObjects = new List<int>();
 
@@ -21,6 +22,8 @@ public class LevelControl : MonoBehaviour
     void Start()
     {
         _levelUI.ViewMany(_countMany);
+        _levelUI.ViewPollution(_pollution);
+        _dayStat.NumberDay = 1;
     }
 
     // Update is called once per frame
@@ -39,6 +42,10 @@ public class LevelControl : MonoBehaviour
                 _countSecond = 0;
                 _cabbageBox.CreateBox();
                 UpdateTreeSet();
+                UpdatePollution();
+
+                _levelUI.ViewDayStat(_dayStat);
+                _dayStat.AddingDay();
             }
         }
     }
@@ -47,6 +54,24 @@ public class LevelControl : MonoBehaviour
     {
         bool viewCrona = _pollution < 50f;
         foreach(TreeControl tree in _treeSet) tree.ViewCrona(viewCrona);
+    }
+
+    private void UpdatePollution()
+    {
+        if (_pollution > 3) _pollution -= 3;
+        _levelUI.ViewPollution(_pollution);
+        _dayStat.PollutMinus = 3;
+    }
+
+    public void ChangePollution(int value)
+    {
+        int newPollut = _pollution + value;
+        if (_pollution <= 100)
+        {
+            _pollution = newPollut;
+        }
+        _dayStat.PollutPlus += value;
+        _levelUI.ViewPollution(_pollution);
     }
 
     public void ViewHint(string hintText)
@@ -73,6 +98,8 @@ public class LevelControl : MonoBehaviour
         {
             _countMany = newMany;
             _levelUI.ViewMany(_countMany);
+            if (count > 0) _dayStat.ManyPlus += count;
+            else _dayStat.ManyMinus += -count;
         } 
     }
 
@@ -85,5 +112,23 @@ public class LevelControl : MonoBehaviour
             return true;
         }
         return false;
+    }
+}
+
+public struct DayStat
+{
+    public int NumberDay;
+    public int ManyPlus;
+    public int ManyMinus;
+    public int PollutPlus;
+    public int PollutMinus;
+
+    public void AddingDay()
+    {
+        NumberDay++;
+        ManyPlus = 0;
+        ManyMinus = 0;
+        PollutPlus = 0;
+        PollutMinus = 0;
     }
 }
