@@ -13,6 +13,7 @@ public class SalePoint : MonoBehaviour
     [SerializeField] private GameObject _linkObject;
     [SerializeField] private GameObject _destroyObject;
     [SerializeField] private LevelControl _levelControl;
+    [SerializeField] private ShopPointControl _shopPoint;
 
     public string Description { get { return _descr; } }
     public int SaleID { get { return _saleID; } }
@@ -40,6 +41,10 @@ public class SalePoint : MonoBehaviour
                         _linkObject.SetActive(true);
                         if (_destroyObject != null) Destroy(_destroyObject);
                         Destroy(gameObject);
+                        if (_shopPoint != null)
+                        {
+                            //_shopPoint.
+                        }
                     }
                 }
                 //if (_myCommand != null) _myCommand.Execute(_numberFirstCommand);

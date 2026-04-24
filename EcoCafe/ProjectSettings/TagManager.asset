@@ -9,6 +9,9 @@ TagManager:
   - Trigger
   - SalePoint
   - TrashCan
+  - ShopPoint
+  - FoodShelf
+  - Food
   layers:
   - Default
   - TransparentFX

@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class TriggerControl : MonoBehaviour
 {
-    [SerializeField] private string _pointDescr;
+    [SerializeField] private string _pointDescr1;
+    [SerializeField] private string _pointDescr2;
     [SerializeField] private GameObject _linkTarget;
     [SerializeField] private int _numberFirstCommand;
     [SerializeField] private int _numberSecondCommand;
@@ -14,7 +15,7 @@ public class TriggerControl : MonoBehaviour
 
     private IMyCommand _myCommand = null;
     private bool _inTrigger = false;
-    public string Description { get {  return _pointDescr; } }
+    public string Description { get {  return _pointDescr1; } }
     public int ID_TaikingItem { get {  return _idTaikingItem; } }
 
     private void Awake()

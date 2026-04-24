@@ -56,7 +56,7 @@ public class PlayerInteract : MonoBehaviour
             SalePoint sp = other.gameObject.GetComponent<SalePoint>();
             if (sp != null)
             {
-                _levelControl.ViewHint($"ֽאזלטעו 'E' קעמבû {sp.Description}");
+                _levelControl.ViewHint($"ֽאזלטעו \'E\' קעמבû {sp.Description}");
             }
         }
     }
@@ -122,6 +122,7 @@ public class PlayerInteract : MonoBehaviour
     {
         if (_currentTaking != null && _currentTarget != null)
         {
+            _currentTarget.transform.parent = null;
             if (_currentTaking.TakingID == _currentTriggerItemID)
             {
                 _levelControl.ChangeMany(_currentTaking.TakingPrice);
